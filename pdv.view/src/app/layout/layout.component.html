@@ -1,0 +1,25 @@
+<header class="d-flex justify-content-center bg-black py-3 mb-4">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a [routerLink]="['/home']" (click)="page('home')" [routerLinkActive]="'home'" class="nav-link" [ngClass]="{'active': selectPage() == 'home'}">Inicio</a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/pdv']" (click)="page('pdv')" class="nav-link" [ngClass]="{'active': selectPage() == 'PDV'}">PDV</a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/products']" (click)="page('products')" [routerLinkActive]="'products'" class="nav-link" [ngClass]="{'active': selectPage() == 'products'}">Produtos</a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/flux-control']" (click)="page('flux-control')" class="nav-link" [ngClass]="{'active': selectPage() == 'controle-fluxo'}">Controle de fluxo</a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/about']" (click)="page('about')" class="nav-link" [ngClass]="{'active': selectPage() == 'about'}">About</a>
+    </li>
+  </ul>
+</header>
+
+<router-outlet/>
+
+<footer>
+
+</footer>

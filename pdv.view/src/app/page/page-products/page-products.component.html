@@ -1,0 +1,276 @@
+<!-- <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateProduct">TESTE</button> -->
+<div class="container">
+    <div class="p-3 mb-2 bg-dark-subtle text-dark-emphasisb shadow rounded">
+  
+      <h2>Lista de Produtos</h2>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <button class="nav-link " [ngClass]="{'active': list()}" aria-current="page" (click)="selected(true)">Produtos</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link " [ngClass]="{'active': !list()}" (click)="selected(false)">Categorias</button>
+        </li>
+      </ul>
+<!-- data-bs-toggle="modal" data-bs-target="#updateProduct" -->
+      @if(list()){
+        <app-table
+          [displayedColumns]="displayedColumnsProduct"
+          [fields]="fieldsProduct"
+          [$dataSource]="dataSourceProduct"
+          (selectItem)="selectProduct($event)"
+          data-bs-toggle="modal" data-bs-target="#updateProduct">
+        </app-table>
+      }
+      @else{
+        <app-table
+          [displayedColumns]="displayedColumnsCategory"
+          [fields]="fieldsCategory"
+          [$dataSource]="dataSourceCategory"
+          (selectItem)="selectCategory($event)"
+          data-bs-toggle="modal" data-bs-target="#updateCategory">
+        </app-table>
+      }    
+    </div>
+  </div>
+
+
+  <app-modal idModel="updateProduct" title="Editar produto: {{product.name}}">
+    <div inputs>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome do Produto</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="product.name" name="name" required>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">R$</span>
+        <span class="input-group-text">0.00</span>
+        <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [(ngModel)]="product.price" name="price" required>
+      </div>
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
+        <select class="form-select" id="inputGroupSelect01" [(ngModel)]="product.category" name="category" required>
+          <option selected value="PRINCIPAL" >Principal</option>
+          <option value="BEBIDAS">Bebidas</option>
+          <option value="FRIOS">Toratas</option>
+          <option value="TESTE">TESTE</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <input class="form-control" type="file" id="formFile"name="image" (change)="onSelectFile($event)">
+      </div>
+    </div>
+    <div buttons>
+      <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+          <button type="button" class="btn btn-success m-2" (click)="updateProduct(product)" data-bs-dismiss="modal">Salvar</button>
+          <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product.id)">Excluir</button>
+    </div>
+  </app-modal>
+
+  <app-modal idModel="createProduct" title="Cadastro de Produto">
+    <div inputs>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome do Produto</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="productCreate.name" name="name" required>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">R$</span>
+        <span class="input-group-text">0.00</span>
+        <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [(ngModel)]="productCreate.price" name="price" required>
+      </div>
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
+        <select class="form-select" id="inputGroupSelect01" [(ngModel)]="productCreate.category" name="category" required>
+          <option selected value="PRINCIPAL" >Principal</option>
+          <option value="BEBIDAS">Bebidas</option>
+          <option value="FRIOS">Toratas</option>
+          <option value="TESTE">TESTE</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <input class="form-control" type="file" id="formFile"name="image" (change)="onSelectFile($event)">
+      </div>
+    </div>
+    <div buttons>
+      <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+      <button type="button" class="btn btn-success m-2" (click)="createProduct(productCreate)" data-bs-dismiss="modal">Criar</button>
+    </div>
+  </app-modal>
+
+  <app-modal idModel="createCategory" title="Cadastro de Categoria">
+    <div inputs>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome da Categoria</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="category.name" name="name" required>
+      </div>
+    </div>
+    <div buttons>
+      <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+      <button type="button" class="btn btn-success m-2" (click)="createCategory(category)" data-bs-dismiss="modal">Criar</button>
+    </div>
+  </app-modal>
+  
+  <app-modal idModel="updateCategory" title="Editar a Categoria: {{category.name}}">
+    <div inputs>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome da Categoria</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="category.name" name="name" required>
+      </div>
+    </div>
+    <div buttons>
+      <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+      <button type="button" class="btn btn-success m-2" (click)="updateCategory(category)" data-bs-dismiss="modal">Salvar</button>
+      <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteCategory(category.id)">Excluir</button>
+    </div>
+  </app-modal>
+
+  <!-- Modal -->
+<!-- <div class="modal fade" id="updateProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateProductLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateProductLabel">Editar produto: {{product.name}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="p-3 mb-2 bg-light text-dark shadow rounded">
+            <form class="form-group">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Nome do Produto</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="product.name" name="name" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">R$</span>
+                <span class="input-group-text">0.00</span>
+                <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [(ngModel)]="product.price" name="price" required>
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="product.category" name="category" required>
+                  <option selected value="PRINCIPAL" >Principal</option>
+                  <option value="BEBIDAS">Bebidas</option>
+                  <option value="FRIOS">Toratas</option>
+                  <option value="TESTE">TESTE</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="formFile"name="image" (change)="onSelectFile($event)">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+          <button type="button" class="btn btn-success m-2" (click)="updateProduct(product)" data-bs-dismiss="modal">Salvar</button>
+          <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product.id)">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="modal fade" id="createProduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createProductLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createProductLabel">Cadastro de Produto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="p-3 mb-2 bg-light text-dark shadow rounded">
+            <form class="form-group" novalidate>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Nome do Produto</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="productCreate.name" name="name" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">R$</span>
+                <span class="input-group-text">0.00</span>
+                <input type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [(ngModel)]="productCreate.price" name="price" required>
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
+                <select class="form-select" id="inputGroupSelect01" [(ngModel)]="productCreate.category" name="category" required>
+                  <option selected value="PRINCIPAL" >Principal</option>
+                  <option value="BEBIDAS">Bebidas</option>
+                  <option value="FRIOS">Toratas</option>
+                  <option value="TESTE">TESTE</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <input class="form-control" type="file" id="formFile"name="image" (change)="onSelectFile($event)">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+          <button type="button" class="btn btn-success m-2" (click)="createProduct(productCreate)" data-bs-dismiss="modal">Criar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="modal fade" id="createCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createCategoryLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="createCategoryLabel">Cadastro de Categoria</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="p-3 mb-2 bg-light text-dark shadow rounded">
+            <form class="form-group">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Nome da Categoria</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="category.name" name="name" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+          <button type="button" class="btn btn-success m-2" (click)="createCategory()" data-bs-dismiss="modal">Criar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <div class="modal fade" id="updateCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="updateCategoryLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateCategoryLabel">Cadastro de Categoria</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="p-3 mb-2 bg-light text-dark shadow rounded">
+            <form class="form-group">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Nome da Categoria</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="category.name" name="name" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+          <button type="button" class="btn btn-success m-2" (click)="updateCategory()" data-bs-dismiss="modal">Salvar</button>
+          <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteCategory(category.id)">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->

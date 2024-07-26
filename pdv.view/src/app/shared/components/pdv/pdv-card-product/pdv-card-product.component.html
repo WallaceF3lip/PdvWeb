@@ -1,0 +1,17 @@
+<div class="row">
+  @for (product of products; track $index) {
+    <div class="card m-1" style="width: 13rem;">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{product.name}}</h5>
+        <p class="card-text">R$ {{product.price}}</p>              
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+          <button type="button" class="btn btn-outline-primary" (click)="quantityProduct((quantity() == 0) ? 0 : -1)">-</button>
+          <label class="btn btn-outline-primary" id="{{$index}}">{{quantity()}}</label>
+          <button type="button" class="btn btn-outline-primary" (click)="quantityProduct(1)">+</button>
+        </div><br>
+        <a (click)="addToCart(product)" class="btn btn-primary m-2">Adicionar</a>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,24 @@
+<div class="modal fade" id="{{idModel}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="{{idModel}}Label">{{title}}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="p-3 mb-2 bg-light text-dark shadow rounded">
+              <form class="form-group">
+                <ng-content select="[inputs]"></ng-content>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-start">
+            <ng-content select="[buttons]"></ng-content>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

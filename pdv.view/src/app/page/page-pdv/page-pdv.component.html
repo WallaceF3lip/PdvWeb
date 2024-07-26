@@ -1,0 +1,119 @@
+<div class="container text-center">
+    <div class="row mh-100">
+      <div class="col-7">
+        <!-- <div class="row"> -->
+          <app-pdv-card-product
+            [products]="products"
+            (productSelected)="addToCart($event)"
+          />
+          <!-- @for (product of products; track $index) {
+            <div class="card m-1" style="width: 15rem;">
+              <img src="..." class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">R$ {{product.price}}</p>              
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                  <button type="button" class="btn btn-outline-primary" (click)="quantityProduct(($quantity() == 0) ? 0 : -1)">-</button>
+                  <label class="btn btn-outline-primary" id="{{$index}}">{{$quantity()}}</label>
+                  <button type="button" class="btn btn-outline-primary" (click)="quantityProduct(1)">+</button>
+                </div><br>
+                <a (click)="addToCart(product)" class="btn btn-primary m-2">Adicionar</a>
+              </div>
+            </div>
+          } -->
+        <!-- </div> -->
+      </div>
+      <div class="col-5" style="height: 30rem;">
+        <div class="row">
+          <div class="container">
+            <div class="p-2 mb-2 bg-dark-subtle text-dark-emphasis shadow rounded">
+              <h1>Carrinho</h1><br>
+              <div class="overflow-y-auto">
+                <app-table
+                [displayedColumns]="displayedColumns"
+                [$dataSource]="teste"
+                (selectItem)="selectItem($event)"
+                data-bs-toggle="modal" data-bs-target="#updateProduct">
+              </app-table>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Produto</th>
+                      <th scope="col">Quantidade</th>
+                      <th scope="col">Valor U.</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                @for (item of cartProducts; track $index) {
+  
+                      <tr data-bs-toggle="modal" data-bs-target="#editModal">
+                        <th scope="row">{{$index + 1}}</th>
+                        <td>{{item.name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.quantity * item.price}}</td>
+                        <td>{{item.price}}</td>
+                      </tr>
+  
+                      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="editModalLabel">Editar item</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <h5>{{cartProducts[index].name}}</h5><br>
+                              <input type="text" class="form-control" placeholder="Digite a quantidade" name="editQuantity" [(ngModel)]="editQuantity">
+                            </div>
+                            <div class="modal-footer d-flex justify-content-end">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                              <button type="button" class="btn btn-success m-1" data-bs-dismiss="modal" (click)="editQuantityProduct()">Salvar edição</button>
+                              <button type="button" class="btn btn-danger m-1" data-bs-dismiss="modal" (click)="deletProduct()">Excluir</button>
+                            </div>                        
+                          </div>
+                        </div>
+                      </div>
+  
+                    
+                  <!-- <button type="button" class="btn btn-outline-primary w-100">
+                    <div class="d-flex justify-content-between">
+                        <p>{{item.name}}</p>
+                        <p>{{item.quantity}}</p>
+                        <p>R$ {{item.price}}</p>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                      <button type="button" class="btn btn-danger btn-sm m-1" onclick="return confirm('Deseja excluir o registro?')">
+                        Deletar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                          <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                        </svg>
+                      </button>
+                      <button type="button" class="btn btn-warning btn-sm m-1" data-bs-toggle="modal" data-bs-target="#editModal">
+                        Editar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                          <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </button> -->
+  
+  
+                <!-- Modal -->
+                
+                }
+              </tbody>
+              </table>
+              </div>
+              <h5 class="text-start">Total: R$ {{totalAmount()}}</h5><br>
+              <button type="button" class="btn btn-success" (click)="finishSale()">Finalizar Venda</button>
+              <button type="button" class="btn btn-warning m-3" (click)="pendingSale()">Pendente</button>
+              <button type="button" class="btn btn-danger" (click)="cancelSale()">Cancelar Venda</button>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
