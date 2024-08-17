@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { TableComponent } from "../../shared/components/table/table.component";
 import { ProductsService } from '../../service/products.service';
 import { Iproduct } from '../../interface/product';
-import { product } from '../../models/product.mode';
+import { product } from '../../models/product.model';
 
 @Component({
   selector: 'app-page-flux-control',

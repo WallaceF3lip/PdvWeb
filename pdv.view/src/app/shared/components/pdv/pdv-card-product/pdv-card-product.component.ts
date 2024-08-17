@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { productCart } from '../../../../models/productCart.model';
-import { product } from '../../../../models/product.mode';
+import { product } from '../../../../models/product.model';
 
 @Component({
   selector: 'app-pdv-card-product',

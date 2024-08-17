@@ -1,6 +1,6 @@
 import { Component, signal, Input, Output, EventEmitter } from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
-import { product } from '../../../models/product.mode';
+import { product } from '../../../models/product.model';
 import { Iproduct } from '../../../interface/product';
 import { TableColumn } from '../../../models/tableColumn.model';
 

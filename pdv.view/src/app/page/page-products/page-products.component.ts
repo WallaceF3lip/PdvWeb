@@ -2,7 +2,7 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { productCreate } from '../../models/createProduct.model';
-import { product } from '../../models/product.mode';
+import { product } from '../../models/product.model';
 import { ProductsService } from '../../service/products.service';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -99,8 +99,8 @@ createProduct(product: productCreate){
     console.log(products)
   });
 
-  this.loadProducts()
   this.productCreate = new productCreate();
+  this.loadProducts()
 }
 
 createCategory(category: category){
@@ -112,14 +112,14 @@ createCategory(category: category){
 //#region DELETE
   deleteProduct(idProduct: string){
     this.PrudctService.deleteProduct(idProduct).subscribe();
-    this.loadProducts()
     this.product = new product();
+    this.loadProducts()
   }
 
   deleteCategory(idCategory: string){
     this.CategoryService.deleteCategory(idCategory).subscribe();
-    this.loadCategories()
     this.category = new product();
+    this.loadCategories()
   }
 //#endregion 
 
@@ -141,7 +141,7 @@ createCategory(category: category){
   }
 //#endregion
 
-  //#region LOAD DATA
+//#region LOAD DATA
   loadProducts(){
     this.PrudctService.getAllProducts().subscribe(products => {
       this.dataSourceProduct.set(products);
@@ -153,7 +153,7 @@ createCategory(category: category){
       this.dataSourceCategory.set(categories);
     });
   }
-  //#endregion
+//#endregion
 
   closeModal(){
     this.product = new product();

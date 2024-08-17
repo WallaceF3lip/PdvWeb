@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
-import { product } from '../../models/product.mode';
+import { product } from '../../models/product.model';
 import { ProductsService } from '../../service/products.service';
 
 @Component({

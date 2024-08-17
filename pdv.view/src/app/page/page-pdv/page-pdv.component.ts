@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { product } from '../../models/product.mode';
+import { product } from '../../models/product.model';
 import { productCart } from '../../models/productCart.model';
 import { PdvCardProductComponent } from "../../shared/components/pdv/pdv-card-product/pdv-card-product.component";
 import { FormsModule } from '@angular/forms';
@@ -20,14 +20,12 @@ import { TableColumn } from '../../models/tableColumn.model';
 })
 export class PagePdvComponent {
   
-  displayedColumns: string[] = ['name', 'price', 'quantity'];
-  // displayedColumns: TableColumn[] = [
-  //   {fildname: 'name', displayname: 'NOME'},
-  //   {fildname: 'price', displayname: 'PREÇO'},
-  //   {fildname: 'quantity', displayname: 'QUANTIDADE'}
-  //   ];
+
+  displayedColumnsProduct: string[] = ['id', 'name', 'price', 'category'];
+  fieldsProduct: string[] = ['ID', 'NOME', 'PREÇO', 'CATEGORIA'];
+  
   cartProducts = Array<productCart>();
-  teste = signal<productCart[]>([]);
+  teste = signal<Iproduct[]>([]);
 
   public products: Array<product> = [];
   $quantity = signal<number>(0);
@@ -39,6 +37,7 @@ export class PagePdvComponent {
 
   ngOnInit() {
     this.loadProducts();
+    this.teste();
   }
 
   loadProducts(){
@@ -48,6 +47,8 @@ export class PagePdvComponent {
   }
 
   addToCart(product: any){
+    // this.teste.set([...this.teste(), product]);
+
 
     if(this.cartProducts.length === 0){
       this.cartProducts.push(product);
@@ -65,9 +66,11 @@ export class PagePdvComponent {
       }
       //Add item
       if(exist){          
-        this.cartProducts.push(product);}
+        this.cartProducts.push(product);
+        // this.teste.set([...this.teste(), product]);
+      }
     }
-    console.log(this.cartProducts);      
+    console.log(this.teste());      
   }
 
   totalAmount(): number{
@@ -111,4 +114,10 @@ export class PagePdvComponent {
   cancelSale() {
     this.cartProducts = [];
   }
+}
+export interface Iproduct{
+  id: string;
+  name: string;
+  price: number;
+  category: string;
 }
