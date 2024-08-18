@@ -1,27 +1,11 @@
 <div class="container text-center">
     <div class="row mh-100">
       <div class="col-7">
-        <!-- <div class="row"> -->
+        
           <app-pdv-card-product
             [products]="products"
-            (productSelected)="addToCart($event)"
-          />
-          <!-- @for (product of products; track $index) {
-            <div class="card m-1" style="width: 15rem;">
-              <img src="..." class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">{{product.name}}</h5>
-                <p class="card-text">R$ {{product.price}}</p>              
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                  <button type="button" class="btn btn-outline-primary" (click)="quantityProduct(($quantity() == 0) ? 0 : -1)">-</button>
-                  <label class="btn btn-outline-primary" id="{{$index}}">{{$quantity()}}</label>
-                  <button type="button" class="btn btn-outline-primary" (click)="quantityProduct(1)">+</button>
-                </div><br>
-                <a (click)="addToCart(product)" class="btn btn-primary m-2">Adicionar</a>
-              </div>
-            </div>
-          } -->
-        <!-- </div> -->
+            (productSelected)="addToCart($event)"/>
+
       </div>
       <div class="col-5" style="height: 30rem;">
         <div class="row">
@@ -29,69 +13,43 @@
             <div class="p-2 mb-2 bg-dark-subtle text-dark-emphasis shadow rounded">
               <h1>Carrinho</h1><br>
               <div class="overflow-y-auto">
+                
                 <app-table
                 [displayedColumns]="displayedColumnsProduct"
                 [fields]="fieldsProduct"
-                [$dataSource]="teste"
+                [dataSource]="cartProducts()"
                 (selectItem)="selectItem($event)"
                 data-bs-toggle="modal" data-bs-target="#updateProduct">
-                </app-table>  
+                </app-table>
 
-                <!-- <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Produto</th>
-                      <th scope="col">Quantidade</th>
-                      <th scope="col">Valor U.</th>
-                      <th scope="col">Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                @for (item of cartProducts; track $index) {
-  
-                      <tr data-bs-toggle="modal" data-bs-target="#editModal">
-                        <th scope="row">{{$index + 1}}</th>
-                        <td>{{item.name}}</td>
-                        <td>{{item.quantity}}</td>
-                        <td>{{item.quantity * item.price}}</td>
-                        <td>{{item.price}}</td>
-                      </tr>
-  
-                      <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="editModalLabel">Editar item</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <h5>{{cartProducts[index].name}}</h5><br>
-                              <input type="text" class="form-control" placeholder="Digite a quantidade" name="editQuantity" [(ngModel)]="editQuantity">
-                            </div>
-                            <div class="modal-footer d-flex justify-content-end">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                              <button type="button" class="btn btn-success m-1" data-bs-dismiss="modal" (click)="editQuantityProduct()">Salvar edição</button>
-                              <button type="button" class="btn btn-danger m-1" data-bs-dismiss="modal" (click)="deletProduct()">Excluir</button>
-                            </div>                        
-                          </div>
-                        </div>
-                      </div>
-                
-                }
-              </tbody>
-              </table> -->
               </div>
               <h5 class="text-start">Total: R$ {{totalAmount()}}</h5><br>
               <button type="button" class="btn btn-success" (click)="finishSale()">Finalizar Venda</button>
               <button type="button" class="btn btn-warning m-3" (click)="pendingSale()">Pendente</button>
               <button type="button" class="btn btn-danger" (click)="cancelSale()">Cancelar Venda</button>
-  
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <app-modal idModel="updateProduct" title="Editar produto: {{product.name}}">
+    <div inputs>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome do Produto</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="product.name" name="name" disabled>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">0.00</span>
+        <input type="text" (keypress)="NumberKey($event)" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [(ngModel)]="product.quantity" name="price" required>
+      </div>
+    </div>
+    <div buttons>
+      <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
+          <button type="button" class="btn btn-success m-2" (click)="updateProduct(product)" data-bs-dismiss="modal">Salvar</button>
+          <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product)">Excluir</button>
+    </div>
+  </app-modal>
   
   

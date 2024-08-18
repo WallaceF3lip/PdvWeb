@@ -1,4 +1,3 @@
-<!-- <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateProduct">TESTE</button> -->
 <div class="container">
     <div class="p-3 mb-2 bg-dark-subtle text-dark-emphasisb shadow rounded">
   
@@ -26,12 +25,11 @@
           <button class="nav-link " [ngClass]="{'active': !list()}" (click)="selected(false)">Categorias</button>
         </li>
       </ul>
-<!-- data-bs-toggle="modal" data-bs-target="#updateProduct" -->
       @if(list()){
         <app-table
           [displayedColumns]="displayedColumnsProduct"
           [fields]="fieldsProduct"
-          [$dataSource]="dataSourceProduct"
+          [dataSource]="dataSourceProduct()"
           (selectItem)="selectProduct($event)"
           data-bs-toggle="modal" data-bs-target="#updateProduct">
         </app-table>
@@ -40,7 +38,7 @@
         <app-table
           [displayedColumns]="displayedColumnsCategory"
           [fields]="fieldsCategory"
-          [$dataSource]="dataSourceCategory"
+          [dataSource]="dataSourceCategory()"
           (selectItem)="selectCategory($event)"
           data-bs-toggle="modal" data-bs-target="#updateCategory">
         </app-table>

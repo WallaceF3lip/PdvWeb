@@ -1,24 +1,21 @@
 
-import { Component, inject, signal, viewChild } from '@angular/core';
-import { Observable, timer } from 'rxjs';
+import { Component, inject, signal } from '@angular/core';
+import { timer } from 'rxjs';
 import { productCreate } from '../../models/createProduct.model';
 import { product } from '../../models/product.model';
 import { ProductsService } from '../../service/products.service';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgClass } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { TableComponent } from "../../shared/components/table/table.component";
-import { MatTableModule } from '@angular/material/table';
 import { category } from '../../models/category.model';
 import { ModalComponent } from "../../shared/components/modal/modal.component";
-import { TableColumn } from '../../models/tableColumn.model';
 import { CategoriesService } from '../../service/category.service';
-import { time } from 'console';
 
 @Component({
   selector: 'app-page-products',
   standalone: true,
-  imports: [FormsModule, NgClass, HttpClientModule, AsyncPipe, TableComponent, MatTableModule, ModalComponent],
+  imports: [FormsModule, NgClass, HttpClientModule, TableComponent, ModalComponent],
   templateUrl: './page-products.component.html',
   styleUrl: './page-products.component.css'
 })

@@ -1,4 +1,4 @@
-import { Component, signal, Input, Output, EventEmitter } from '@angular/core';
+import { Component, signal, Input, Output, EventEmitter, computed, model } from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
 import { product } from '../../../models/product.model';
 import { Iproduct } from '../../../interface/product';
@@ -13,15 +13,34 @@ import { TableColumn } from '../../../models/tableColumn.model';
 })
 export class TableComponent {
 
-
   @Input()
   displayedColumns: string[] = [];
 
   @Input()
   fields: string[] = [];
+
+  // _dataSource = model<StAsyncTableSource>(new StAsyncTableSource()); 
+
+  // @Input() set dataSource(dataSource: StAsyncTableSource) {
+  //   this._dataSource.set(dataSource);
+  // }
+
+  // get dataSource(): Signal<StAsyncTableSource>{
+  //   return this._dataSource;
+  // }
   
+
   @Input()
+  set dataSource(value: any[]) {
+    this.$dataSource.set(value);
+  }
+
+  get dataSource() {
+    return this.$dataSource();
+  }
+
   $dataSource = signal<any[]>([]);
+  dataSourceComputed = computed(() => this.$dataSource());
 
   @Output()
   selectItem = new EventEmitter<any>();
@@ -38,4 +57,3 @@ export class TableComponent {
     return prod;
   }
 }
-
