@@ -2,9 +2,9 @@
     <div class="row mh-100">
       <div class="col-7">
         
-          <app-pdv-card-product
-            [products]="products"
-            (productSelected)="addToCart($event)"/>
+        <app-pdv-card-product
+          [products]="products"
+          (productSelected)="addToCart($event)"/>
 
       </div>
       <div class="col-5" style="height: 30rem;">
@@ -24,8 +24,8 @@
 
               </div>
               <h5 class="text-start">Total: R$ {{totalAmount()}}</h5><br>
-              <button type="button" class="btn btn-success" (click)="finishSale()">Finalizar Venda</button>
-              <button type="button" class="btn btn-warning m-3" (click)="pendingSale()">Pendente</button>
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#saleFinalization">Finalizar Venda</button>
+              <button type="button" class="btn btn-warning m-3" data-bs-toggle="modal" data-bs-target="#SalePending">Pendente</button>
               <button type="button" class="btn btn-danger" (click)="cancelSale()">Cancelar Venda</button>
             </div>
           </div>
@@ -33,6 +33,68 @@
       </div>
     </div>
   </div>
+  
+  <app-modal idModel="saleFinalization" title="Finalização da Venda">
+
+    <div inputs>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome do Cliente</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="sale.client" name="name" required>
+      </div>
+      
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Forma de Pagamento</label>
+        <select class="form-select" id="inputGroupSelect01" [(ngModel)]="sale.paymentMethod" name="paymentMethod" required>
+          <option selected value="Dinheiro" >Dinheiro</option>
+          <option value="Debito">Débito</option>
+          <option value="Credito">Crédito</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">0.00</span>
+        <input type="text" (keypress)="NumberKey($event)" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [ngModel]="totalAmount()" name="price" disabled>
+      </div>
+    </div>
+
+    <div buttons>
+      <button type="button" class="btn btn-success m-2" data-bs-dismiss="modal" (click)="finishSale()">Finalizar</button>
+      <!-- <button type="button" class="btn btn-success m-2" (click)="" data-bs-dismiss="modal">Salvar</button> -->
+      <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product)">Cancelar</button>
+    </div>
+  </app-modal>
+
+  <app-modal idModel="SalePending" title="Venda Pendente">
+
+    <div inputs>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default">Nome do Cliente</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" [(ngModel)]="sale.client" name="name" required>
+      </div>
+      
+      <div class="input-group mb-3">
+        <label class="input-group-text" for="inputGroupSelect01">Forma de Pagamento</label>
+        <select class="form-select" id="inputGroupSelect01" [(ngModel)]="sale.paymentMethod" name="paymentMethod" required>
+          <option selected value="Dinheiro" >Dinheiro</option>
+          <option value="Debito">Débito</option>
+          <option value="Credito">Crédito</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">0.00</span>
+        <input type="text" (keypress)="NumberKey($event)" class="form-control" aria-label="Dollar amount (with dot and two decimal places)"  [ngModel]="totalAmount()" name="price" disabled>
+      </div>
+    </div>
+
+    <div buttons>
+      <button type="button" class="btn btn-success m-2" data-bs-dismiss="modal" (click)="pendingSale()">Finalizar</button>
+      <!-- <button type="button" class="btn btn-success m-2" (click)="" data-bs-dismiss="modal">Salvar</button> -->
+      <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product)">Cancelar</button>
+    </div>
+  </app-modal>
 
   <app-modal idModel="updateProduct" title="Editar produto: {{product.name}}">
     <div inputs>
@@ -47,9 +109,9 @@
     </div>
     <div buttons>
       <button type="button" class="btn btn-secondary m-2" data-bs-dismiss="modal" (click)="closeModal()">Fechar</button>
-          <button type="button" class="btn btn-success m-2" (click)="updateProduct(product)" data-bs-dismiss="modal">Salvar</button>
-          <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product)">Excluir</button>
+      <button type="button" class="btn btn-success m-2" (click)="updateProduct(product)" data-bs-dismiss="modal">Salvar</button>
+      <button type="button" class="btn btn-danger m-2" data-bs-dismiss="modal" (click)="deleteProduct(product)">Excluir</button>
     </div>
   </app-modal>
-  
+    
   

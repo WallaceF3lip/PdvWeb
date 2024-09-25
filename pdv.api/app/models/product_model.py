@@ -1,10 +1,12 @@
-# from uuid import UUID, uuid4
-# from pydantic import Field
 from pydantic import BaseModel
-# from typing import Optional
 
-class productModel(BaseModel):
+class product(BaseModel):
   name: str = None
   price: float = None
   category: str = None
+
+class productModel(product, BaseModel):
   image: str = None
+
+class productSaleModel(product, BaseModel):
+  quantity: int = None

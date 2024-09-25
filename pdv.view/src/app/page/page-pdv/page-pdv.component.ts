@@ -7,6 +7,8 @@ import { ProductsService } from '../../service/products.service';
 import { TableComponent } from "../../shared/components/table/table.component";
 import { TableColumn } from '../../models/tableColumn.model';
 import { ModalComponent } from "../../shared/components/modal/modal.component";
+import { sale } from '../../models/sale.model';
+import { SaleService } from '../../service/sale.service';
 
 @Component({
   selector: 'app-page-pdv',
@@ -27,8 +29,10 @@ export class PagePdvComponent implements OnInit{
   public product = new productCart();
   public products: Array<product> = [];
   public cartProducts = signal<productCart[]>([]);
+  public sale = new sale();
   
   PrudctService = inject(ProductsService);
+  SaleService = inject(SaleService);
 
   ngOnInit() {
     this.loadProducts();
@@ -86,18 +90,36 @@ export class PagePdvComponent implements OnInit{
   }
 
   finishSale() {
-    try {
-      
-    } catch (error) {
-      
-    }
+    let totalAmount = this.totalAmount();
+
+    this.sale.totalValue = totalAmount;
+    this.sale.date = new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear();
+    this.sale.products = this.cartProducts();    
+    this.sale.pending = false;
+
+    this.SaleService.createSale(this.sale).subscribe(
+      () => {
+        console.log("Venda concluida", this.sale);
+      }
+    );
+    this.cartProducts = signal<productCart[]>([]);
+    this.sale = new sale();
   }
   pendingSale() {
-    try {
-      
-    } catch (error) {
-      
-    }
+    let totalAmount = this.totalAmount();
+
+    this.sale.totalValue = totalAmount;
+    this.sale.date = new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear();
+    this.sale.products = this.cartProducts();    
+    this.sale.pending = true;
+
+    this.SaleService.createSale(this.sale).subscribe(
+      () => {
+        console.log("Venda Pendente", this.sale);
+      }
+    );
+    this.cartProducts = signal<productCart[]>([]);
+    this.sale = new sale();
   }
   cancelSale() {
     this.cartProducts.set([]);

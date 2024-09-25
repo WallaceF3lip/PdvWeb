@@ -6,3 +6,4 @@ db = client.pdv_db
 
 collectio_products = db['products']
 collectio_category = db['category']
+collectio_sales = db['sales']
