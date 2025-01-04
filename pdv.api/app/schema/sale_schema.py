@@ -6,7 +6,9 @@ def indivual_sale(sale) -> dict:
         "paymentMethod": sale["paymentMethod"],
         "totalValue": sale["totalValue"],
         "products": sale["products"],
-        "pending": sale["pending"]
+        "pending": sale["pending"],
+        "delivery": sale["delivery"],
+        "address": sale["address"]
     }
 
 def list_sales(sales) -> list:

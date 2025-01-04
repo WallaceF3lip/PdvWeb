@@ -9,6 +9,7 @@ import { TableColumn } from '../../models/tableColumn.model';
 import { ModalComponent } from "../../shared/components/modal/modal.component";
 import { sale } from '../../models/sale.model';
 import { SaleService } from '../../service/sale.service';
+import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-pdv',
@@ -16,23 +17,31 @@ import { SaleService } from '../../service/sale.service';
   templateUrl: './page-pdv.component.html',
   styleUrl: './page-pdv.component.css',
   imports: [
-  FormsModule,
-  PdvCardProductComponent,
-  TableComponent,
-  ModalComponent]
+    FormsModule,
+    PdvCardProductComponent,
+    TableComponent,
+    ModalComponent]
 })
 export class PagePdvComponent implements OnInit{
   
   public fieldsProduct: string[] = ['NOME', 'PREÇO', 'CATEGORIA', 'QUANTIDADE'];
   public displayedColumnsProduct: string[] = ['name', 'price', 'category', 'quantity'];
 
+  PrudctService = inject(ProductsService);
+  SaleService = inject(SaleService);
+
   public product = new productCart();
   public products: Array<product> = [];
   public cartProducts = signal<productCart[]>([]);
   public sale = new sale();
   
-  PrudctService = inject(ProductsService);
-  SaleService = inject(SaleService);
+  ckbCredito: boolean = false
+  ckbPix: boolean = false
+  ckbDinheiro: boolean = false
+  ckbDebito: boolean = false
+  ckbEndereco: boolean = false
+
+  salePending: boolean = false
 
   ngOnInit() {
     this.loadProducts();
@@ -95,34 +104,24 @@ export class PagePdvComponent implements OnInit{
     this.sale.totalValue = totalAmount;
     this.sale.date = new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear();
     this.sale.products = this.cartProducts();    
-    this.sale.pending = false;
+    this.sale.pending = this.salePending;
 
-    this.SaleService.createSale(this.sale).subscribe(
-      () => {
-        console.log("Venda concluida", this.sale);
-      }
-    );
-    this.cartProducts = signal<productCart[]>([]);
-    this.sale = new sale();
+    if(!this.salePending)
+      this.SaleService.createSale(this.sale).subscribe(
+        () => {
+          console.log("Venda concluida", this.sale);
+        });
+    else
+      this.SaleService.createSale(this.sale).subscribe(
+        () => {
+          console.log("Venda Pendente", this.sale);
+        });
+
+    this.Clear();
   }
-  pendingSale() {
-    let totalAmount = this.totalAmount();
-
-    this.sale.totalValue = totalAmount;
-    this.sale.date = new Date().getDate() + '/' + new Date().getMonth() + '/' + new Date().getFullYear();
-    this.sale.products = this.cartProducts();    
-    this.sale.pending = true;
-
-    this.SaleService.createSale(this.sale).subscribe(
-      () => {
-        console.log("Venda Pendente", this.sale);
-      }
-    );
-    this.cartProducts = signal<productCart[]>([]);
-    this.sale = new sale();
-  }
+  
   cancelSale() {
-    this.cartProducts.set([]);
+    this.Clear();
   }
   
   closeModal() {
@@ -136,6 +135,22 @@ export class PagePdvComponent implements OnInit{
       return true;
     }
     return false;
+  }
+
+  Clear(){
+    this.sale = new sale(); // VERIFICAR
+
+    this.cartProducts.set([]);
+
+    this.ckbCredito = false
+    this.ckbPix = false
+    this.ckbDinheiro = false
+    this.ckbDebito = false
+    this.ckbEndereco = false  
+    this.ckbEndereco = false
+    this.salePending = false
+
+    this.totalAmount();
   }
 }
 export interface Iproduct{

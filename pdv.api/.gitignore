@@ -8,5 +8,3 @@
 /app/routes/__pycache__
 
 /app/schema/__pycache__
-
-pdv.api/.env
