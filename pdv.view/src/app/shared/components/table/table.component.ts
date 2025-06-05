@@ -1,8 +1,8 @@
-import { Component, signal, Input, Output, EventEmitter, computed, model } from '@angular/core';
+import { Component, signal, Input, Output, EventEmitter } from '@angular/core';
 import {MatTableModule} from '@angular/material/table';
 import { product } from '../../../models/product.model';
 import { Iproduct } from '../../../interface/product';
-import { TableColumn } from '../../../models/tableColumn.model';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-table',
@@ -40,7 +40,7 @@ export class TableComponent {
   }
 
   $dataSource = signal<any[]>([]);
-  dataSourceComputed = computed(() => this.$dataSource());
+  dataSource$ = toObservable(this.$dataSource);
 
   @Output()
   selectItem = new EventEmitter<any>();
